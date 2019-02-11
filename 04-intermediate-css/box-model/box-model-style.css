@@ -1,0 +1,26 @@
+p {
+/*Content - Width and Height*/
+width: 50%;
+/*width: 200px;*/
+/*height: 300px;*/
+
+/*Border*/
+border: 2px solid blue;
+ /*  can be applied to different sides
+  border-top:;
+  */
+
+/*Padding*/
+padding: 10px;
+/*padding-left*/
+
+/*Margin*/
+
+/*margin: 100px;*/
+/*can be set in any direction like top, left, right*/
+/*margin: top  right bottom left in pixel; similar for padding and border*/
+margin: 0 auto 0 auto;
+/* margin: 0 auto; top bottom 0 pixel and left right auto means in center accordingly */
+
+/*you need the px unless the number is 0*/
+}
