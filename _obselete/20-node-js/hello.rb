@@ -1,3 +1,0 @@
-puts "HELLO FROM RUBY";
-puts "HELLO FROM RUBY";
-puts "HELLO FROM RUBY";
