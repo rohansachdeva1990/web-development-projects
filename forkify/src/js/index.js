@@ -16,6 +16,9 @@ import {
  */
 const state = {};
 
+/**
+ * SEARCH CONTROLLER
+ */
 // async because we want this to happen this in background, and also
 // await can only be in async functions
 const controlSearch = async () => {
@@ -32,13 +35,18 @@ const controlSearch = async () => {
         searchView.clearResults();
         renderLoader(elements.searchResult);
 
-        // 5. Search for the recipes
-        // Why await because we want to have the result before rendering
-        await state.search.getResult();
+        try {
+            // 5. Search for the recipes
+            // Why await because we want to have the result before rendering
+            await state.search.getResult();
 
-        // 6. Render results on UI
-        clearLoader();
-        searchView.renderResults(state.search.result)
+            // 6. Render results on UI
+            clearLoader();
+            searchView.renderResults(state.search.result)
+        } catch (error) {
+            alert('Something went wrong with the search...');
+            clearLoader(); // Clear the loader in any case
+        }
     }
 }
 
@@ -58,11 +66,39 @@ elements.searchResultPages.addEventListener('click', e => {
     }
 });
 
-
 /**
  * RECIPE CONTROLLER
  */
+const controlRecipe = async () => {
 
-const r = new Recipe(46956);
-r.getRecipe();
-console.log(r);
+    // Get the ID from the URL
+    // Getting the hash value from the selected the selected url
+    const id = window.location.hash.replace('#', '');
+    console.log(id);
+
+    if (id) {
+        // Prepare UI for changes
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+        try {
+            // Get the recipe data
+            await state.recipe.getRecipe();
+
+            // Calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+
+            // Render recipe
+            console.log(state.recipe);
+        } catch (error) {
+            alert('Error processing recipe!');
+        }
+    }
+};
+
+// window.addEventListener('hashchange', controlRecipe);
+// // When the page is loaded, for eg user pasting a url
+// window.addEventListener('load', controlRecipe);
+// Adding same listener to multiple events
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
