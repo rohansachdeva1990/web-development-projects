@@ -10,12 +10,20 @@ export const clearInput = () => {
 
 export const clearResults = () => {
     elements.searchResultList.innerHTML = '';
+    elements.searchResultPages.innerHTML = '';
 }
 
-export const renderResults = recipes => {
-    console.log(recipes);
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+    // Render result of current page
+    const start = (page - 1) * resPerPage;
+    const end = page * resPerPage;
+
     // for each is working like method reference
-    recipes.forEach(renderRecipe)
+    // end number in slice is not included
+    recipes.slice(start, end).forEach(renderRecipe);
+
+    // Render result of pagination
+    renderButtons(page, recipes.length, resPerPage);
 };
 
 const renderRecipe = recipe => {
@@ -50,3 +58,34 @@ const limitRecipeTitle = (title, limit = 17) => {
     }
     return title;
 }
+
+const renderButtons = (page, numResults, resPerPage) => {
+    const pages = Math.ceil(numResults / resPerPage);
+
+    let button;
+    if (page === 1 && pages > 1) {
+        // Only button to go to next page
+        button = createButton(page, 'next');
+    } else if (page < pages) {
+        // Both buttons
+        button = `
+            ${createButton(page, 'prev')}
+            ${createButton(page, 'next')}
+        `;
+    } else if (page === pages && pages > 1) {
+        // Only button to go to prev page
+        button = createButton(page, 'prev');
+    }
+
+    elements.searchResultPages.insertAdjacentHTML('afterbegin', button);
+};
+
+// type: prev or next
+// Here data-goto, is used for event handling when jumping to next page
+const createButton = (page, type) => `
+        <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+            <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>  
+            <svg class="search__icon">
+                <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+            </svg>
+        </button>`;

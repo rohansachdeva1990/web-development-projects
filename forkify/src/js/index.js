@@ -1,6 +1,10 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
-import {elements, renderLoader, clearLoader} from './views/base';
+import {
+    elements,
+    renderLoader,
+    clearLoader
+} from './views/base';
 
 /**
  * Global State of the App
@@ -40,4 +44,15 @@ const controlSearch = async () => {
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault(); // Disables page reload
     controlSearch();
+});
+
+elements.searchResultPages.addEventListener('click', e => {
+    // Idea here is to locate the page number which was added by us during button creation
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+        // read the go-to page
+        const goToPage = parseInt(btn.dataset.goto, 10);
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage);
+    }
 });
