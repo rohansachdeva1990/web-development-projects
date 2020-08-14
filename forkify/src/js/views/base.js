@@ -24,6 +24,7 @@ export const renderLoader = parent => {
 export const clearLoader = () => {
     const loader = document.querySelector(`.${elementStrings.loader}`);
     if (loader) {
+        // A common approach to remove an element
         loader.parentElement.removeChild(loader);
     }
 };
