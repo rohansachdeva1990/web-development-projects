@@ -55,6 +55,13 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
+// // TESTING
+// window.addEventListener('load', e => {
+//     e.preventDefault(); // Disables page reload
+//     controlSearch();
+// });
+
+
 elements.searchResultPages.addEventListener('click', e => {
     // Idea here is to locate the page number which was added by us during button creation
     const btn = e.target.closest('.btn-inline');
@@ -81,9 +88,14 @@ const controlRecipe = async () => {
 
         // Create new recipe object
         state.recipe = new Recipe(id);
+        
+        // TESTING
+        // window.r = state.recipe; 
+
         try {
             // Get the recipe data
             await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
 
             // Calculate servings and time
             state.recipe.calcTime();
