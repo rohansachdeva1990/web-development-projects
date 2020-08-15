@@ -22,7 +22,7 @@ import {
 const state = {};
 
 // TESTING
-window.state = state;
+//window.state = state;
 
 /**
  * SEARCH CONTROLLER
@@ -193,7 +193,6 @@ const controlLike = () => {
         state.likes = new Likes();
     }
     const currentId = state.recipe.id;
-    console.log('In controlLike id: ' + currentId);
 
     // User has not yet like the current recipe
     if (!state.likes.isLiked(currentId)) {
