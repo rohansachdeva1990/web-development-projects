@@ -1,5 +1,6 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import {
@@ -82,7 +83,7 @@ const controlRecipe = async () => {
     // Get the ID from the URL
     // Getting the hash value from the selected the selected url
     const id = window.location.hash.replace('#', '');
-    console.log(id);
+    // console.log(id);
 
     if (id) {
         // Prepare UI for changes
