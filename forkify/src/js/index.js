@@ -5,6 +5,7 @@ import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import {
     elements,
     renderLoader,
@@ -117,7 +118,10 @@ const controlRecipe = async () => {
 
             // Render recipe
             clearLoader();
-            recipeView.renderRecipe(state.recipe);
+            recipeView.renderRecipe(
+                state.recipe,
+                state.likes.isLiked(id)
+            );
         } catch (error) {
             alert('Error processing recipe!');
         }
@@ -178,38 +182,49 @@ elements.shopping.addEventListener('click', e => {
 /**
  * LIKES CONTROLLER
  */
+
+// TESTING
+state.likes = new Likes();
+likesView.toggleLikeMenu(state.likes.getNumLikes());
+
 const controlLike = () => {
     // Create a new list If there is none yet
     if (!state.likes) {
         state.likes = new Likes();
     }
     const currentId = state.recipe.id;
+    console.log('In controlLike id: ' + currentId);
 
     // User has not yet like the current recipe
-    if (!state.likes.isLiked()) {
+    if (!state.likes.isLiked(currentId)) {
         // Add like to the state
-        const newLike = state.likes.addLike(currentId, 
+        const newLike = state.likes.addLike(
+            currentId,
             state.recipe.title,
             state.recipe.author,
             state.recipe.img)
 
         // Toggle the like button
+        likesView.toggleLikeButton(true);
 
         // Add like to the UI list
-        
+        likesView.renderLike(newLike);
     }
     // User has liked current recipe
     else {
+        console.log('Disliking...');
         // Remove like to from  state
         state.likes.deleteLike(currentId);
 
         // Toggle the like button
+        likesView.toggleLikeButton(false);
 
         // Remove like from the UI list
-
+        likesView.deleteLike(currentId);
     }
-}
 
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+}
 
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
