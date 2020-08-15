@@ -48,6 +48,7 @@ export default class Recipe {
         ];
         // ES6 destructuring
         const units = [...unitsShort, 'kg', 'g'];
+
         const newIngredients = this.ingredients.map(el => {
             // 1. Uniform Units
             let ingredient = el.toLowerCase();
@@ -60,6 +61,7 @@ export default class Recipe {
 
             // 3. Parse ingredients into count, unit and ingredient
             const arrIng = ingredient.split(' ');
+
             // for each element in array we test, if that element is present in the unitsShort
             const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
 
@@ -101,5 +103,18 @@ export default class Recipe {
             return objIngredient;
         });
         this.ingredients = newIngredients;
+    }
+
+    updateServings(type) {
+        // Serving
+        const newServings = (type === 'dec') ? this.servings - 1 : this.servings + 1;
+
+        // Ingredients
+        this.ingredients.forEach(ing => {
+            // Business Logic
+            ing.count *= (newServings / this.servings);
+        })
+        
+        this.servings = newServings;
     }
 }
