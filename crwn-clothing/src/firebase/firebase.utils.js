@@ -47,7 +47,6 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 // Setting up google authentication
-
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
